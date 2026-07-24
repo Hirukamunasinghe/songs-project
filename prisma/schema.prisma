@@ -1,0 +1,21 @@
+// The database schema — the single source of truth for a "Song".
+generator client {
+  provider      = "prisma-client-js"
+  // "native" for your Mac; the rhel target is what Netlify's Linux
+  // serverless functions need at runtime.
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Song {
+  id        Int      @id @default(autoincrement())
+  title     String
+  artist    String?
+  lyrics    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
