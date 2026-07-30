@@ -1,5 +1,4 @@
-// ADD SONG FORM — protected. The form's action is the createSong Server
-// Action, which re-checks auth before writing.
+// ADD SONG FORM — protected. Submits to the createSong Server Action.
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { isAuthed } from "@/lib/auth";
@@ -9,13 +8,13 @@ export default async function NewSongPage() {
   if (!(await isAuthed())) redirect("/admin/login");
 
   return (
-    <main>
+    <div className="form-page">
       <Link href="/admin" className="back">
         ← Back to admin
       </Link>
-      <h2 style={{ marginTop: 16 }}>Add a song</h2>
+      <h1 className="page-title">Add a song</h1>
 
-      <form action={createSong}>
+      <form action={createSong} className="card form">
         <div className="field">
           <label htmlFor="title">Title *</label>
           <input id="title" name="title" required />
@@ -35,6 +34,6 @@ export default async function NewSongPage() {
           Save song
         </button>
       </form>
-    </main>
+    </div>
   );
 }

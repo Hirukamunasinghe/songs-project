@@ -1,6 +1,4 @@
-// ADMIN PLATFORM layout — separate header from the public site.
-// Shows the logout button only when actually logged in (so the login
-// page stays clean).
+// ADMIN PLATFORM layout — matches the light theme, shows logout when authed.
 import Link from "next/link";
 import { isAuthed } from "@/lib/auth";
 import { logoutAction } from "@/app/actions";
@@ -13,23 +11,27 @@ export default async function AdminLayout({
   const authed = await isAuthed();
 
   return (
-    <>
-      <header className="site">
-        <Link href="/admin">
-          <h1>🔒 Admin</h1>
-        </Link>
-        {authed && (
-          <nav className="nav" style={{ display: "flex", alignItems: "center" }}>
-            <Link href="/">View site</Link>
-            <form action={logoutAction} style={{ marginLeft: 16 }}>
-              <button type="submit" className="btn ghost">
-                Log out
-              </button>
-            </form>
-          </nav>
-        )}
+    <div className="page">
+      <header className="nav-bar">
+        <div className="wrap nav-inner">
+          <Link href="/admin" className="brand">
+            <span className="brand-mark">✦</span> Admin
+          </Link>
+          {authed && (
+            <nav className="admin-nav">
+              <Link href="/">View site</Link>
+              <form action={logoutAction}>
+                <button type="submit" className="btn ghost sm">
+                  Log out
+                </button>
+              </form>
+            </nav>
+          )}
+        </div>
       </header>
-      {children}
-    </>
+      <main className="page-main">
+        <div className="wrap">{children}</div>
+      </main>
+    </div>
   );
 }

@@ -1,5 +1,4 @@
-// PUBLIC PLATFORM layout. Header has NO admin link — regular users never
-// see a way into the admin area.
+// PUBLIC PLATFORM layout — refined nav + footer, no admin link.
 import Link from "next/link";
 
 export default function PublicLayout({
@@ -8,13 +7,18 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <header className="site">
-        <Link href="/">
-          <h1>🎵 Songs</h1>
-        </Link>
+    <div className="page">
+      <header className="nav-bar">
+        <div className="wrap nav-inner">
+          <Link href="/" className="brand">
+            <span className="brand-mark">♪</span> Songs
+          </Link>
+        </div>
       </header>
-      {children}
-    </>
+      <main className="page-main">{children}</main>
+      <footer className="footer">
+        <div className="wrap">A living songbook — sing along.</div>
+      </footer>
+    </div>
   );
 }

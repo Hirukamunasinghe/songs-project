@@ -1,163 +1,605 @@
+/* ============================================================
+   Design system — warm, editorial light theme
+   ============================================================ */
 :root {
-  --bg: #0f1115;
-  --card: #1a1d24;
-  --border: #2a2f3a;
-  --text: #e7e9ee;
-  --muted: #9aa3b2;
-  --accent: #7c9cff;
-  --danger: #ff6b6b;
+  --bg: #eef2f8;
+  --bg-soft: #f7f9fc;
+  --surface: #ffffff;
+  --ink: #17203a;
+  --ink-2: #3d4a68;
+  --muted: #6d7890;
+  --line: #dde5f0;
+  --accent: #2f5fd0;
+  --accent-ink: #2148aa;
+  --accent-soft: #e7eefb;
+  --radius: 18px;
+  --radius-sm: 12px;
+  --shadow-sm: 0 1px 2px rgba(34, 29, 24, 0.05);
+  --shadow: 0 2px 6px rgba(34, 29, 24, 0.04), 0 16px 34px -18px rgba(34, 29, 24, 0.28);
+  --shadow-lg: 0 40px 80px -30px rgba(34, 29, 24, 0.4);
+  --sans: var(--font-sans), system-ui, -apple-system, sans-serif;
+  --display: var(--font-display), Georgia, serif;
+  --sinhala: var(--font-sinhala), var(--font-display), serif;
 }
 
 * {
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
+  padding: 0;
+}
+
+body {
   background: var(--bg);
-  color: var(--text);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--ink);
+  font-family: var(--sans);
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-.container {
-  max-width: 760px;
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.wrap {
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 32px 20px 80px;
+  padding: 0 24px;
 }
 
-header.site {
+.page {
+  min-height: 100vh;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+}
+.page-main {
+  flex: 1;
+}
+
+/* ============================================================
+   Top nav
+   ============================================================ */
+.nav-bar {
+  border-bottom: 1px solid var(--line);
+  background: rgba(247, 249, 252, 0.82);
+  backdrop-filter: saturate(140%) blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.nav-inner {
+  display: flex;
   align-items: center;
-  margin-bottom: 32px;
+  justify-content: space-between;
+  height: 72px;
 }
-
-header.site a {
-  color: var(--text);
-  text-decoration: none;
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: -0.01em;
 }
-
-h1 {
-  font-size: 26px;
-  margin: 0;
+.brand-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 16px;
 }
-
-.nav a {
-  color: var(--muted);
-  text-decoration: none;
-  margin-left: 16px;
+.brand-mark.lg {
+  width: 52px;
+  height: 52px;
+  font-size: 24px;
+  border-radius: 14px;
+}
+.admin-nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
   font-size: 14px;
+  color: var(--muted);
 }
-.nav a:hover {
+.admin-nav a:hover {
   color: var(--accent);
 }
 
-.song-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 12px;
+/* ============================================================
+   Hero
+   ============================================================ */
+.hero {
+  padding: 80px 0 56px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -40% 40% 40% -10%;
+  background: radial-gradient(
+    circle,
+    var(--accent-soft) 0%,
+    transparent 60%
+  );
+  opacity: 0.7;
+  z-index: -1;
+}
+.eyebrow {
+  display: inline-block;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.hero-title {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: 0 0 20px;
+  max-width: 12ch;
+}
+.hero-sub {
+  font-size: 19px;
+  color: var(--ink-2);
+  max-width: 46ch;
+  margin: 0 0 24px;
+}
+.hero-meta {
+  font-size: 14px;
+  color: var(--muted);
 }
 
+/* ============================================================
+   Song grid + cards
+   ============================================================ */
+.section {
+  padding-top: 24px;
+  padding-bottom: 90px;
+}
+.song-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 26px;
+}
 .song-card {
-  display: block;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px 18px;
-  text-decoration: none;
-  color: var(--text);
-  transition: border-color 0.15s;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius);
+  transition: transform 0.22s ease;
 }
 .song-card:hover {
-  border-color: var(--accent);
+  transform: translateY(-6px);
 }
-.song-card .title {
+.cover {
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, 0.18));
+}
+.cover-note {
+  font-size: 46px;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  z-index: 1;
+}
+.song-card-body {
+  padding: 16px 4px 4px;
+}
+.song-title {
+  font-family: var(--sinhala);
+  font-weight: 600;
   font-size: 18px;
-  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink);
 }
-.song-card .artist {
+.song-artist {
+  font-size: 14px;
   color: var(--muted);
-  font-size: 14px;
+  margin-top: 3px;
 }
 
-.lyrics {
-  white-space: pre-wrap;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px;
-  font-size: 17px;
-  margin-top: 16px;
+/* ============================================================
+   Song detail
+   ============================================================ */
+.song-page {
+  padding-top: 34px;
+  padding-bottom: 100px;
 }
-
-.btn {
+.back {
   display: inline-block;
-  background: var(--accent);
-  color: #0b0e14;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 16px;
   font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
+  color: var(--muted);
+  margin-bottom: 22px;
 }
-.btn.danger {
-  background: transparent;
-  color: var(--danger);
-  border: 1px solid var(--danger);
+.back:hover {
+  color: var(--accent);
+}
+.song-hero {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  min-height: 240px;
+  display: flex;
+  align-items: flex-end;
+  position: relative;
+  overflow: hidden;
+}
+.song-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.45));
+}
+.song-hero-inner {
+  position: relative;
+  z-index: 1;
+  padding: 34px;
+  color: #fff;
+}
+.song-title-lg {
+  font-family: var(--sinhala);
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.15;
+  margin: 0;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+}
+.song-artist-lg {
+  margin: 8px 0 0;
+  font-size: 16px;
+  opacity: 0.9;
+}
+.lyrics {
+  font-family: var(--sinhala);
+  white-space: pre-wrap;
+  font-size: 21px;
+  line-height: 2;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 44px 48px;
+  margin: 26px auto 0;
+  max-width: 680px;
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #fff;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 12px 22px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+.btn:hover {
+  background: var(--accent-ink);
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn.sm {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+.btn.full {
+  width: 100%;
 }
 .btn.ghost {
   background: transparent;
-  color: var(--muted);
-  border: 1px solid var(--border);
+  color: var(--ink-2);
+  border-color: var(--line);
+}
+.btn.ghost:hover {
+  background: var(--bg);
+  color: var(--ink);
+}
+.btn.danger {
+  background: transparent;
+  color: var(--accent);
+  border-color: var(--line);
+}
+.btn.danger:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
 }
 
+/* ============================================================
+   Admin
+   ============================================================ */
+.admin-page,
+.form-page {
+  padding: 40px 0 90px;
+}
+.admin-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  gap: 16px;
+}
+.page-title {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 34px;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.admin-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  box-shadow: var(--shadow-sm);
+}
+.admin-cover {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.admin-row-info {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ============================================================
+   Forms
+   ============================================================ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 32px;
+}
+.form {
+  max-width: 640px;
+  margin-top: 22px;
+}
 .field {
-  display: block;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 .field label {
   display: block;
-  font-size: 14px;
-  color: var(--muted);
-  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink-2);
+  margin-bottom: 8px;
 }
 .field input,
 .field textarea {
   width: 100%;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 12px;
-  color: var(--text);
-  font-size: 15px;
-  font-family: inherit;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 13px 15px;
+  color: var(--ink);
+  font-size: 16px;
+  font-family: var(--sans);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .field textarea {
-  min-height: 240px;
+  min-height: 300px;
   resize: vertical;
+  font-family: var(--sinhala);
+  line-height: 1.8;
+}
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
 }
 
-.admin-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px 18px;
-  margin-bottom: 10px;
+/* ============================================================
+   Login
+   ============================================================ */
+.login-wrap {
+  min-height: calc(100vh - 72px);
+  display: grid;
+  place-items: center;
+  padding: 40px 24px;
+}
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+  padding: 40px 36px;
+  box-shadow: var(--shadow-lg);
+}
+.login-card .brand-mark {
+  margin: 0 auto 18px;
+}
+.login-card .page-title {
+  font-size: 26px;
+}
+.login-card .form {
+  margin-top: 20px;
+  text-align: left;
+}
+.error {
+  color: var(--accent);
+  font-size: 14px;
+  margin: 6px 0 0;
 }
 
+/* ============================================================
+   Footer + misc
+   ============================================================ */
+.footer {
+  border-top: 1px solid var(--line);
+  padding: 30px 0;
+  color: var(--muted);
+  font-size: 14px;
+}
 .muted {
   color: var(--muted);
 }
-.back {
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 14px;
+
+/* ============================================================
+   Responsive — consistent spacing down to small phones
+   ============================================================ */
+
+/* Tablet / small laptop */
+@media (max-width: 900px) {
+  .wrap {
+    padding: 0 22px;
+  }
+  .song-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 22px;
+  }
+}
+
+/* Phones */
+@media (max-width: 640px) {
+  .wrap {
+    padding: 0 18px;
+  }
+  .nav-inner {
+    height: 62px;
+  }
+  .brand {
+    font-size: 20px;
+  }
+
+  .hero {
+    padding: 32px 0 24px;
+  }
+  .hero-title {
+    font-size: clamp(30px, 8.5vw, 40px);
+    margin-bottom: 14px;
+  }
+  .hero-sub {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+  .eyebrow {
+    margin-bottom: 14px;
+  }
+
+  .section {
+    padding-top: 4px;
+    padding-bottom: 52px;
+  }
+  /* Two covers per row on phones, tighter, even gutters */
+  .song-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .song-card-body {
+    padding: 12px 2px 4px;
+  }
+  .song-title {
+    font-size: 16px;
+  }
+  .cover-note {
+    font-size: 34px;
+  }
+
+  .song-page {
+    padding-top: 24px;
+    padding-bottom: 72px;
+  }
+  .song-hero {
+    min-height: 190px;
+  }
+  .song-hero-inner {
+    padding: 22px;
+  }
+  .lyrics {
+    padding: 28px 22px;
+    font-size: 19px;
+    line-height: 1.95;
+    margin-top: 20px;
+  }
+
+  /* Admin: stack the header so title and button never crowd */
+  .admin-page,
+  .form-page {
+    padding: 28px 0 64px;
+  }
+  .admin-head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  .admin-head .btn {
+    width: 100%;
+  }
+  .page-title {
+    font-size: 28px;
+  }
+  .admin-row {
+    padding: 12px 14px;
+    gap: 14px;
+  }
+  .admin-cover {
+    width: 46px;
+    height: 46px;
+  }
+
+  .card {
+    padding: 24px 20px;
+  }
+  .field textarea {
+    min-height: 240px;
+  }
+  .login-card {
+    padding: 32px 24px;
+  }
+}
+
+/* Very small phones — keep 2-up but avoid cramped text */
+@media (max-width: 380px) {
+  .song-grid {
+    gap: 14px;
+  }
+  .song-title {
+    font-size: 15px;
+  }
 }

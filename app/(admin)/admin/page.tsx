@@ -1,31 +1,27 @@
-// ADMIN DASHBOARD — protected. Verifies the session server-side before
-// showing anything (defense in depth beyond the middleware redirect).
+// ADMIN DASHBOARD — protected. Lists songs with cover thumbnails + delete.
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { isAuthed } from "@/lib/auth";
 import { deleteSong } from "@/app/actions";
+import { coverStyle } from "@/lib/cover";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
   if (!(await isAuthed())) redirect("/admin/login");
 
-  const songs = await prisma.song.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+  const songs = await prisma.song.findMany({ orderBy: { createdAt: "desc" } });
 
   return (
-    <main>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: 20,
-        }}
-      >
-        <h2 style={{ margin: 0 }}>Manage songs</h2>
+    <div className="admin-page">
+      <div className="admin-head">
+        <div>
+          <h1 className="page-title">Manage songs</h1>
+          <p className="muted">
+            {songs.length} song{songs.length === 1 ? "" : "s"} in the collection
+          </p>
+        </div>
         <Link href="/admin/new" className="btn">
           + Add song
         </Link>
@@ -34,21 +30,29 @@ export default async function AdminPage() {
       {songs.length === 0 ? (
         <p className="muted">No songs yet. Add the first one.</p>
       ) : (
-        songs.map((song) => (
-          <div key={song.id} className="admin-row">
-            <div>
-              <div style={{ fontWeight: 600 }}>{song.title}</div>
-              {song.artist && <div className="artist">{song.artist}</div>}
+        <div className="admin-list">
+          {songs.map((song) => (
+            <div key={song.id} className="admin-row">
+              <div
+                className="admin-cover"
+                style={{ background: coverStyle(song.id) }}
+              />
+              <div className="admin-row-info">
+                <div className="song-title">{song.title}</div>
+                {song.artist && (
+                  <div className="song-artist">{song.artist}</div>
+                )}
+              </div>
+              <form action={deleteSong}>
+                <input type="hidden" name="id" value={song.id} />
+                <button type="submit" className="btn danger sm">
+                  Delete
+                </button>
+              </form>
             </div>
-            <form action={deleteSong}>
-              <input type="hidden" name="id" value={song.id} />
-              <button type="submit" className="btn danger">
-                Delete
-              </button>
-            </form>
-          </div>
-        ))
+          ))}
+        </div>
       )}
-    </main>
+    </div>
   );
 }
